@@ -9,7 +9,7 @@ import (
 	"sshx/internal/types"
 )
 
-var configFile = flag.String("f", "etc/conf.yaml", "config file path")
+var configFile = flag.String("f", "etc/conf-prod.yaml", "config file path")
 var command = flag.String("c", "", "command")
 
 func main() {
