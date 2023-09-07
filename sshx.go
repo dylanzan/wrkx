@@ -10,20 +10,20 @@ import (
 )
 
 var configFile = flag.String("f", "etc/conf.yaml", "config file path")
+var command = flag.String("c", "", "command")
 
 func main() {
 
 	flag.Parse()
 
-	var c types.Config
-	conf.MustLoad(*configFile, &c)
+	var config types.Config
+	conf.MustLoad(*configFile, &config)
 
-	svcCtx := svc.NewServiceContext(c)
+	svcCtx := svc.NewServiceContext(config)
 	log.Printf("config: %v \n", svcCtx.Config)
 
-	err := handler.SyncExecHandler(svcCtx)
+	err := handler.SyncExecHandler(svcCtx, *command)
 	if err != nil {
 		log.Fatal(err)
 	}
-
 }

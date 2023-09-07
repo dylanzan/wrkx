@@ -20,7 +20,7 @@ var (
 	_poolMap = make(map[string]*sync.Pool)
 )
 
-func SyncExecHandler(svcCtx *svc.ServiceContext) error {
+func SyncExecHandler(svcCtx *svc.ServiceContext, command string) error {
 	if len(svcCtx.Config.Servers) == 0 {
 		return errors.New("no server")
 	}
@@ -60,17 +60,17 @@ func SyncExecHandler(svcCtx *svc.ServiceContext) error {
 		}
 	}
 
-	for {
-		cmdStr := strings.TrimRight(_commandScan(), "\n")
-		if cmdStr == "exit" {
-			os.Exit(0)
-		}
-		for serverKey := range _poolMap {
-			_wg.Add(1)
-			go _execCommand(serverKey, cmdStr, _wg)
-		}
-		_wg.Wait()
+	//for {
+	//cmdStr := strings.TrimRight(_commandScan(), "\n")
+	//if cmdStr == "exit" {
+	//	os.Exit(0)
+	//}
+	for serverKey := range _poolMap {
+		_wg.Add(1)
+		go _execCommand(serverKey, command, _wg)
 	}
+	_wg.Wait()
+	//}
 
 	return nil
 }
